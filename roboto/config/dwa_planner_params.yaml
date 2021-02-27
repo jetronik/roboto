@@ -1,0 +1,110 @@
+DWAPlannerROS:
+
+# Robot Configuration Parameters - Kobuki
+  max_vel_x: 0.3  # 0.55
+  min_vel_x: -0.3
+
+
+  max_vel_y: 0.0  # diff drive robot
+  min_vel_y: 0.0  # diff drive robot
+
+  max_trans_vel: 0.3 # choose slightly less than the base's capability
+  min_trans_vel: 0.1  # this is the min trans velocity when there is negligible rotational velocity
+  trans_stopped_vel: 0.1
+
+  # Warning!
+  #   do not set min_trans_vel to 0.0 otherwise dwa will always think translational velocities
+  #   are non-negligible and small in place rotational velocities will be created.
+
+  max_rot_vel: 1.3  # choose slightly less than the base's capability
+  min_rot_vel: 0.1  # this is the min angular velocity when there is negligible translational velocity
+  rot_stopped_vel: 0.5
+  
+  acc_lim_x: 1.0 # maximum is theoretically 2.0, but we 
+  acc_lim_theta: 3.0
+  acc_lim_y: 0.0      # diff drive robot
+
+# Goal Tolerance Parameters
+  yaw_goal_tolerance: 0.04  # 0.05
+  xy_goal_tolerance: 0.1  # 0.10
+  occdist_scale: 0.1 #0.10
+  # latch_xy_goal_tolerance: false
+
+# Forward Simulation Parameters
+  sim_time: 1.7       # 1.7
+  vx_samples: 10       # 3
+  vy_samples: 1       # diff drive robot, there is only one sample
+  vtheta_samples: 20  # 20
+
+# Trajectory Scoring Parameters
+  path_distance_bias: 24.0      # 32.0   - weighting for how much it should stick to the global path plan
+  goal_distance_bias: 24.0      # 24.0   - wighting for how much it should attempt to reach its goal
+  occdist_scale: 0.50           # 0.01   - weighting for how much the controller should avoid obstacles
+  forward_point_distance: 0.0 # 0.325  - how far along to place an additional scoring point
+  stop_time_buffer: 0.2         # 0.2    - amount of time a robot must stop in before colliding for a valid traj.
+  scaling_speed: 0.25           # 0.25   - absolute velocity at which to start scaling the robot's footprint
+  max_scaling_factor: 0.2       # 0.2    - how much to scale the robot's footprint when at speed.
+
+# Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.05  # 0.05   - how far to travel before resetting oscillation flags
+
+# Debugging
+  publish_traj_pc : true
+  publish_cost_grid_pc: true
+  global_frame_id: odom
+
+
+# Differential-drive robot configuration - necessary?
+  holonomic_robot: false
+
+GlobalPlanner:
+
+  footprint: [[-0.407, -0.28], [-0.407, 0.28],  [0.407, 0.28], [0.407, -0.28]]
+                                    # Also see: http://wiki.ros.org/global_planner
+  old_navfn_behavior: false                     # Exactly mirror behavior of navfn, use defaults for other boolean parameters, default false
+  # If in some cases, want global_planner fully functional copy navfn, it is set to true, but note navfn is very old ROS system used, it is now used instead of navfn global_planner, so do not recommend setting It is true.
+
+  use_quadratic: true                           # Use the quadratic approximation of the potential. Otherwise, use a simpler calculation, default true
+  # Set to true, the quadratic function approximation function, otherwise use a more simple method of calculation, which saves hardware computing resources. The default value is true
+
+  use_dijkstra: true                            # Use dijkstra's algorithm. Otherwise, A*, default true
+  # Using dijkstra algorithm? Dijkstra algorithm employed is set to true; false to use the A * algorithm. Default: true
+
+  use_grid_path: false                          # Create a path that follows the grid boundaries. Otherwise, use a gradient descent method, default false
+  # If set to true, the grid plan a route along the border, biased in favor of a straight line across the grid, otherwise, the gradient descent algorithm, the default path smoother points:. False (gradient descent)
+  # Effect of contrast See "ROS navigation Tuning Guide"
+
+  allow_unknown: true                           # Allow planner to plan through unknown space, default true
+                                              #Needs to have track_unknown_space: true in the obstacle / voxel layer (in costmap_commons_param) to work
+  # Specify whether to allow path planning to create a path planning in unknown space.
+  # Note: If the stratified costmap_2d costmap voxel with a layer or disorder, and must also set the parameter track_unknown_space layer to true, otherwise all unknown space will be converted to free space.
+  # Analysis: This parameter specifies whether to allow the route planner planning through unknown areas, the only design parameter is true enough, but also set track_unknown_space parameter is also true in the job in costmap_commons_params.yaml
+                                              
+  planner_window_x: 0.0                         # default 0.0
+  #X # Specifies an optional window size to define a working space planner. It facilitates qualified path planning to operate at the expense of large-scale map of a small window
+
+  planner_window_y: 0.0                         # default 0.0
+  #Y # Specifies an optional window size to define a working space planner. It facilitates qualified path planning to operate at the expense of large-scale map of a small window
+
+  default_tolerance: 0.0                        # If goal in obstacle, plan to the closest point in radius default_tolerance, default 0.0
+  # When a destination set is occupied by an obstacle, it is necessary to find the parameter is the radius of the nearest point as the new destination point. The default value is 0.0
+
+  publish_scale: 100                            # Scale by which the published potential gets multiplied, default 100
+  # The release of potential points multiplied by the point scale to calculate the detection, calculated as follows:
+  # Grid.data [i] = potential_array_ [i] * publish_scale_ / max, the calculated size is 1-99, all the detected point algorithm
+  # https://blog.csdn.net/qq_41906592/article/details/89185808
+
+  planner_costmap_publish_frequency: 0.0        # default 0.0
+  # Planner publish the price chart frequency, default 0.0HZ
+
+  lethal_cost: 253                              # default 253
+  # Deadly cost value, the default is set to 253, you can dynamically configure the parameters.
+
+  neutral_cost: 50                              # default 50
+  # Moderate cost value, the default setting is 50, you can dynamically configure the parameters.
+
+  cost_factor: 3.0                              # Factor to multiply each cost from costmap by, default 3.0
+  #Map # cost of each cost value is multiplied by the factor. The default value is 3.0
+  publish_potential: true                       # Publish Potential Costmap (this is not like the navfn pointcloud2 potential), default true
+  # Whether to publish costmap potential function.
+

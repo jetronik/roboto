@@ -1,0 +1,25 @@
+obstacle_range: 4.0
+raytrace_range: 6.0
+#footprint: [[-0.31, -0.69], [-0.31, 0.25], [0.31, 0.25], [0.31, -0.69]]
+footprint: [[-0.407, -0.28], [-0.407, 0.28],  [0.407, 0.28], [0.407, -0.28]]
+
+#robot_radius: ir_of_robot
+inflation_radius: 0.3
+
+
+#cost_scaling_factor: 3.0
+
+map_type: costmap
+
+#transform_tolerance: 0.3
+observation_sources: scan_back scan_front point_cloud_sensor
+
+scan_front: {sensor_frame: laser_front, data_type: LaserScan, topic: /scan_gazebo, marking: true, clearing: true}
+#scan_back: {sensor_frame: laser_back, data_type: LaserScan, topic: /scan_back, marking: true, clearing: true}
+
+point_cloud_sensor: {sensor_frame: camera_link, data_type: PointCloud2, topic: /kinect/depth/points, marking: true, clearing: true}
+
+#plugins: 
+  #- {name: static,    type: "costmap_2d::StaticLayer"}            
+  #- {name: sensor,    type: "costmap_2d::ObstacleLayer"}
+  #- {name: inflation, type: "costmap_2d::InflationLayer"}

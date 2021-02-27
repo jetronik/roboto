@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- GDB functionality -->
+  <arg name="debug" default="false" />
+  <arg unless="$(arg debug)" name="launch_prefix" value="" />
+  <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+
+  <!-- Load example URDF -->
+  <!--param name="robot_description" command="$(find xacro)/xacro.py '$(find rrbot_description)/urdf/rrbot.xacro'" /-->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find roboto)/urdf/03-roboto.xacro'" />
+
+  <!--group ns="roboto"-->
+
+    <!-- Load hardware interface -->
+    <node name="roboto_hardware_interface" pkg="roboto" type="roboto_hw"
+          output="screen" launch-prefix="$(arg launch_prefix)"/>
+
+    <!-- Load controller settings -->
+        <!--rosparam file="$(find ros_control_boilerplate)/roboto_control/config/joint_limits.yaml" command="load"/-->
+
+    <rosparam file="$(find roboto)/config/roboto_controllers.yaml" command="load"/>
+    <rosparam file="$(find roboto)/config/diff_drive3.yaml" command="load"/>
+     <rosparam file="$(find roboto)/config/joint_states.yaml" command="load"/>
+
+    <!-- Load controller manager -->
+    <!--node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false"
+	  output="screen" args="spawn joint_state_controller
+    /Diff_Drive/diff_drive_controller"/-->
+    <node name="ros_control_controller_manager" pkg="controller_manager" type="spawner" respawn="false"
+	  output="screen" args="
+    joint_state_controller
+    diff_drive_controller"/>
+     <!--position_trajectory_controller" /-->
+
+    <!-- Convert joint states to /tf tranforms -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  respawn="false" output="screen">
+        <!--remap from="/joint_states" to="/roboto/joint_states" /-->
+    </node>
+
+  <!--/group-->
+
+</launch>

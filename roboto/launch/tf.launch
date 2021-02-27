@@ -1,0 +1,13 @@
+<launch>
+
+<node pkg="robot_setup_tf" type="tf_broadcaster" name="camera_tf" output="screen">
+<param name="frame_id" type="string" value="camera_link"/>
+<param name="pos_x" type="double" value="0.4175"/>
+<param name="pos_y" type="double" value="0"/>
+<param name="pos_z" type="double" value="0.6"/>
+
+<param name="roll" type="double" value="-1.57"/>
+<param name="pitch" type="double" value="0"/>
+<param name="yaw" type="double" value="-1.57"/>
+</node>
+</launch>

@@ -1,0 +1,16 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: chassis 
+  obstacle_range: 6.0
+  raytrace_range: 4.0
+  update_frequency: 1.0
+  publish_frequency: 1.0
+  static_map: true
+  
+  #obstacle_layer:
+  #  map_topic: /map
+  #  subscribe_to_updates: true
+  #always_send_full_costmap: false
+
+  
+ 

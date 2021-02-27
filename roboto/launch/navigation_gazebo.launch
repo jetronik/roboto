@@ -1,0 +1,29 @@
+<launch>
+
+   <!--master auto="start"/-->
+ <!-- Run the map server --> 
+    
+
+ <!--- Run AMCL --> 
+    <include file="$(find roboto)/launch/amcl_diff_gazebo.launch"/>
+    <!--node name="map_server" pkg="map_server" type="map_server" args="$(find my_map_package)/my_map.pgm my_map_resolution"/-->
+
+    <!--include file="$(find roboto)/launch/06-gmapping.launch"/-->
+<!--Run costmap-->
+<!--include file="$(find roboto)roboto_control/launch/costmap2d.launch" /-->
+
+
+   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+   
+
+    <rosparam file="$(find roboto)/config/costmap_common_param_test.yaml" command="load"  ns="global_costmap" /> 
+    <rosparam file="$(find roboto)/config/costmap_common_param_test.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find roboto)/config/base_local_planner_params.yaml" command="load" />
+
+    <rosparam file="$(find roboto)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find roboto)/config/global_costmap_params.yaml" command="load" /> 
+    <rosparam file="$(find roboto)/config/move_base_params.yaml" command="load" />
+    <remap from="cmd_vel" to="/diff_drive_controller/cmd_vel"/>
+ </node>
+
+</launch> 

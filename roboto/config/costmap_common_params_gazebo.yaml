@@ -1,0 +1,26 @@
+obstacle_range: 3.0
+raytrace_range: 8.0
+#footprint: [[-0.31, -0.69], [-0.31, 0.25], [0.31, 0.25], [0.31, -0.69]]
+obstacle_range: 10.0
+raytrace_range: 6.0
+footprint: [[-0.407, -0.32], [-0.407, 0.32],  [0.407, 0.32, [0.407, -0.32]]
+
+#robot_radius: ir_of_robot
+inflation_radius: 0.3
+
+
+#cost_scaling_factor: 3.0
+
+map_type: costmap
+
+#transform_tolerance: 0.3
+observation_sources: scan #point_cloud_sensor
+
+scan: {sensor_frame: hokuyo_sensor, data_type: LaserScan, topic: /scan_gazebo, marking: true, clearing: true}
+
+#point_cloud_sensor: {sensor_frame: frame_name, data_type: PointCloud, topic: topic_name, marking: true, clearing: true}
+
+#plugins: 
+  #- {name: static,    type: "costmap_2d::StaticLayer"}            
+  #- {name: sensor,    type: "costmap_2d::ObstacleLayer"}
+  #- {name: inflation, type: "costmap_2d::InflationLayer"}

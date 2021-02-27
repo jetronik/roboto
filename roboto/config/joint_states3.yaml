@@ -1,0 +1,20 @@
+Diff_Drive:
+  joint_state_controller:
+    type: "joint_state_controller/JointStateController"
+    publish_rate: 50
+    use_gui: false
+
+    position:
+      left_front_wheel_joint:
+        type: effort_controllers/JointPositionController
+        joint: left_front_wheel_joint
+        pid: {p: 10.0, i: 0.0, d: 1.0}
+      right_front_wheel_joint:
+        type: effort_controllers/JointPositionController
+        joint: right_front_wheel_joint
+        pid: {p: 5.0, i: 2.0, d: 1.0}
+    hardware_interface:
+      loop_hz: 10 # hz
+      joints:
+        - left_front_wheel_joint
+        - right_front_wheel_joint
